@@ -6,7 +6,7 @@
 /*   By: huidris <huidris@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 02:23:44 by huidris           #+#    #+#             */
-/*   Updated: 2025/11/12 17:30:18 by huidris          ###   ########.fr       */
+/*   Updated: 2025/11/13 15:09:49 by huidris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ bigint::bigint() : _value("0") {}
 bigint::bigint(int value)
 {
 	_value = toString(value);
-	std::cout << _value << std::endl;
 }
 
 bigint::bigint(const bigint &other): _value(other._value){}
