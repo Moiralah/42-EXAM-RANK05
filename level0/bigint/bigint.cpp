@@ -6,7 +6,7 @@
 /*   By: huidris <huidris@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 02:23:44 by huidris           #+#    #+#             */
-/*   Updated: 2025/11/13 15:09:49 by huidris          ###   ########.fr       */
+/*   Updated: 2025/11/27 14:27:29 by huidris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ bigint &bigint::operator=(const bigint &other)
 	return *this;
 }
 
-bigint::~bigint(){};
+bigint::~bigint(){}
 
 bool bigint::operator>(const bigint &value)const
 {
@@ -60,12 +60,12 @@ bool bigint::operator<=(const bigint &value)const
 
 bool bigint::operator==(const bigint &value)const
 {
-	return (_value.size() == value._value.size());
+	return (_value == value._value);
 }
 
 bool bigint::operator!=(const bigint &value)const
 {
-	return (_value.size() != value._value.size());
+	return (_value != value._value);
 }
 
 bigint bigint::operator+(bigint value)const
