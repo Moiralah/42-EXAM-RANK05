@@ -6,7 +6,7 @@
 /*   By: huidris <huidris@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 02:23:44 by huidris           #+#    #+#             */
-/*   Updated: 2025/11/27 14:27:29 by huidris          ###   ########.fr       */
+/*   Updated: 2026/01/22 13:20:54 by huidris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,16 @@ int bigint::toInt(const std::string &value)
 	int num;
 	iss >> num;
 	return num;
+}
+
+void bigint::trim()
+{
+	size_t pos = 0;
+
+	while(pos < _value.size() - 1 && _value[pos] == '0')
+		pos++;
+
+	_value.erase(0, pos);
 }
 
 std::ostream &operator<<(std::ostream &os, const bigint &value)
