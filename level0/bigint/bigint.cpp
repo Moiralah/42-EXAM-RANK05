@@ -1,193 +1,156 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   bigint.cpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: huidris <huidris@student.42kl.edu.my>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/04 02:23:44 by huidris           #+#    #+#             */
-/*   Updated: 2026/01/22 13:20:54 by huidris          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "bigint.hpp"
 
-bigint::bigint() : _value("0") {}
+bigint::bigint() : _v("0"){}
 
-bigint::bigint(int value)
+bigint::bigint(int val)
 {
-	_value = toString(value);
+    std::stringstream oss;
+    oss << val;
+    _v = oss.str();
 }
 
-bigint::bigint(const bigint &other): _value(other._value){}
-
-bigint &bigint::operator=(const bigint &other)
-{
-	if (this != &other)
-		_value = other._value;
-	return *this;
-}
+bigint::bigint(const bigint &other) : _v(other._v){}
 
 bigint::~bigint(){}
 
+bigint &bigint::operator=(const bigint &other)
+{
+    if(this != &other)
+        _v = other._v;
+    return *this;
+}
+
 bool bigint::operator>(const bigint &value)const
 {
-	if (_value.size() != value._value.size())
-		return (_value.size() > value._value.size());
-	return _value > value._value;
+    if(_v.size() != value._v.size())
+        return _v.size() > value._v.size();
+    return _v > value._v;
 }
 
 bool bigint::operator<(const bigint &value)const
 {
-	if (_value.size() != value._value.size())
-		return (_value.size() < value._value.size());
-	return _value < value._value;
+    if(_v.size() != value._v.size())
+        return _v.size() < value._v.size();
+    return _v < value._v;
 }
 
 bool bigint::operator>=(const bigint &value)const
 {
-	if (_value.size() != value._value.size())
-		return (_value.size() >= value._value.size());
-	return _value >= value._value;
+    if(_v.size() != value._v.size())
+        return _v.size() > value._v.size();
+    return _v > value._v;
 }
 
 bool bigint::operator<=(const bigint &value)const
 {
-	if (_value.size() != value._value.size())
-		return (_value.size() <= value._value.size());
-	return _value <= value._value;
+    if(_v.size() != value._v.size())
+        return _v.size() <= value._v.size();
+    return _v <= value._v;
 }
 
 bool bigint::operator==(const bigint &value)const
 {
-	return (_value == value._value);
+    return _v == value._v;
 }
 
 bool bigint::operator!=(const bigint &value)const
 {
-	return (_value != value._value);
+    return _v != value._v;
 }
 
 bigint bigint::operator+(bigint value)const
 {
-	int i = _value.size() - 1;
-	int j = value._value.size() - 1;
-	int carry = 0;
-	std::string result;
+    int i = _v.size() - 1;
+    int j = value._v.size() - 1;
+    int carry = 0;
+    std::string res;
 
-	while (i >= 0 || j >= 0 || carry)
-	{
-		int sum = carry;
-		if (i >= 0)
-			sum += _value[i--] - '0';
-		if (j >= 0)
-			sum += value._value[j--] - '0';
-		result.push_back((sum % 10) + '0');
-		carry = sum / 10;
-	}
-
-	std::reverse(result.begin(), result.end());
-	bigint ret;
-
-	ret._value = result;
-	return ret;
+    while(i >= 0 || j >= 0 || carry)
+    {
+        int sum = carry;
+        if( i >= 0)
+            sum += _v[i--] - '0';
+        if ( j >= 0)
+            sum += value._v[j--] - '0';
+        res.push_back((sum % 10) + '0');
+        carry = sum / 10;
+    }
+    std::reverse(res.begin(), res.end());
+    bigint result;
+    result._v = res;
+    return result;
 }
 
 bigint &bigint::operator+=(const bigint &value)
 {
-	*this = *this + value;
-	return *this;
+    *this = *this + value;
+    return *this;
 }
 
 bigint bigint::operator++()
 {
-	bigint a(1);
-	*this = *this + a;
-	return *this;
+    *this += bigint(1);
+    return *this;
 }
 
 bigint bigint::operator++(int)
 {
-	bigint temp = *this;
-	bigint a(1);
-	*this = *this + a;
-	return temp;
-}
-
-bigint bigint::operator<<(int shift)
-{
-	bigint result(*this);
-	result._value.append(shift, '0');
-	return result;
+    bigint temp = *this;
+    *this += bigint(1);
+    return temp;
 }
 
 bigint bigint::operator>>(int shift)
 {
-	bigint result(*this);
-	int i = result._value.size();
-	if (shift >= i)
-	{
-		result._value = "0";
-		return result;
-	}
-	result._value.erase(i - shift);
-	return result;
+    int i = _v.size();
+    if ( i > shift)
+    {
+        _v.erase(i - shift);
+        return *this;
+    }
+    return bigint(0);
+}
+
+bigint bigint::operator<<(int shift)
+{
+    while(shift > 0)
+    {
+        _v.append("0");
+        shift--;
+    }
+    return *this; 
 }
 
 bigint &bigint::operator<<=(int shift)
 {
-	_value.append(shift, '0');
-	return *this;
+    *this << shift;
+    return *this;
 }
 
 bigint &bigint::operator>>=(int shift)
 {
-	int i = _value.size();
-	if (shift >= i)
-		_value = "0";
-	else
-		_value.erase(i - shift);
-	return *this;
+    *this >> shift;
+    return *this;
 }
 
 bigint &bigint::operator>>=(bigint shift)
 {
-	int n = toInt(shift._value);
-	return (*this >>= n);
+    std::stringstream oss;
+    oss << shift._v;
+    int num;
+    oss >> num;
+
+    *this >>= num;
+    return *this;
 }
 
-std::string bigint::getValue(void) const
+std::string bigint::getVal() const
 {
-	return _value;
-}
-
-std::string bigint::toString(int value) const
-{
-	std::ostringstream oss;
-	oss << value;
-	return oss.str();
-}
-
-int bigint::toInt(const std::string &value)
-{
-	std::istringstream iss(value);
-	int num;
-	iss >> num;
-	return num;
-}
-
-void bigint::trim()
-{
-	size_t pos = 0;
-
-	while(pos < _value.size() - 1 && _value[pos] == '0')
-		pos++;
-
-	_value.erase(0, pos);
+    return _v;
 }
 
 std::ostream &operator<<(std::ostream &os, const bigint &value)
 {
-	os << value.getValue();
-	return os;
+    os << value.getVal();
+    return os;
 }

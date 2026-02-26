@@ -1,28 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   bigint.hpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: huidris <huidris@student.42kl.edu.my>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/04 02:23:44 by huidris           #+#    #+#             */
-/*   Updated: 2026/01/22 13:21:23 by huidris          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef BIGINT_HPP
 # define BIGINT_HPP
 
 #include <iostream>
 #include <sstream>
-#include <cmath>
-#include <vector>
 #include <algorithm>
 
 class bigint
 {
 	private:
-		std::string _value;
+		std::string _v;
 	public:
 		bigint();
 		bigint(int value);
@@ -50,11 +36,8 @@ class bigint
 		bigint &operator>>=(int shift);
 		bigint &operator>>=(bigint shift);
 
-		std::string getValue(void) const;
+		std::string getVal()const;
 
-		std::string toString(int value) const;
-		int toInt(const std::string &value);
-		void trim();
 };
 
 std::ostream &operator<<(std::ostream &os, const bigint &value);
